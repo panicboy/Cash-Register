@@ -16,12 +16,14 @@ for (var i = 0; i < 10; i++) {
     //var sendVal = this.innerHTML;
     theNumber = Number(screen.innerHTML + this.innerHTML);
     screen.innerHTML = theNumber;
+    calc.setScr(theNumber);
   });
 
   btnBox.appendChild(btn);
 }
 
-var calcButtons = [{label: 'x', functionCall: 'doMultiply'},{label: '÷', functionCall: 'doDivide'},{label: '+', functionCall: 'doAdd'},{label: '-', functionCall: 'doSubtract'}];
+//var calcButtons = [{label: 'x', functionCall: 'doMultiply'},{label: '÷', functionCall: 'doDivide'},{label: '+', functionCall: 'doAdd'},{label: '-', functionCall: 'doSubtract'}];
+var calcButtons = [{label: 'x', functionCall: 'multiply'},{label: '÷', functionCall: 'divide'},{label: '+', functionCall: 'add'},{label: '-', functionCall: 'subtract'}];
 for (var i = 0; i < 4; i++) {
 var calcBtn = document.createElement('button');
 buttonProperties = calcButtons[i];
@@ -30,6 +32,9 @@ calcBtn.functionCall = buttonProperties.functionCall;
 calcBtn.addEventListener('click', function(event) {
   oldScreen.innerHTML = screen.innerHTML;
   theNextFunction.innerHTML = this.functionCall;
+  console.log('functionCall: ' + this.functionCall);
+  calc.setFunc(this.functionCall);
+
     screen.innerHTML = 0;
     /*else {
     currentNum = Number(screen.innerHTML);
@@ -41,6 +46,8 @@ calcBtn.addEventListener('click', function(event) {
 opBox.appendChild(calcBtn);
 }
 
+
+/*
 equalBtn = document.createElement('button');
 equalBtn.innerHTML = '=';
 equalBtn.addEventListener('click', function(event){
@@ -61,3 +68,25 @@ equalBtn.addEventListener('click', function(event){
   theNextFunction.innerHTML = '';
 });
 opBox.appendChild(equalBtn);
+*/
+
+equalBtn = document.createElement('button');
+equalBtn.innerHTML = '=';
+equalBtn.addEventListener('click', function(event){
+calc.doIt();
+var theResult = calc.getScr();
+console.log('theResult: ' + theResult);
+screen.innerHTML = theResult;
+oldScreen.innerHTML = '';
+});
+opBox.appendChild(equalBtn);
+
+clrBtn = document.createElement('button');
+clrBtn.innerHTML = 'clear';
+clrBtn.addEventListener('click', function(event){
+oldScreen.innerHTML = '';
+screen.innerHTML = '';
+theNextFunction.innerHTML = '';
+calc.clearAll;
+});
+opBox.appendChild(clrBtn);
