@@ -9,11 +9,11 @@
  var calculatorModule = (function(){
     // initialize variables
     var total;
-    var memory = 0;
-    var buffer = 0;
+    var memory;
+    var buffer = null;
     var screenBuffer = '';
     var calcScreen = '';
-    var functionToPerform = '';
+    var functionToPerform = null;
     var history = [];
 
 
@@ -39,6 +39,10 @@
       return total;
     }
 
+    function clearTotal(){
+      total = 0;
+    }
+
 
   /**
    * Sums the value passed in with `total`
@@ -48,6 +52,7 @@
       addHistoryItem("add",x);
       validateNumber(x);
       total += x;
+      return total;
     }
 
 
@@ -59,6 +64,7 @@
       addHistoryItem("subtract",x);
       validateNumber(x);
       total -= x;
+      return total;
     }
 
 
@@ -70,6 +76,7 @@
       addHistoryItem("multiply",x);
       validateNumber(x);
       total *= x;
+      return total;
     }
 
 
@@ -81,6 +88,7 @@
       addHistoryItem("divide",x);
       validateNumber(x);
       total /= x;
+      return total;
     }
 
 
@@ -122,12 +130,11 @@
     }
 
     /*function updateScreen(theKey){
-
     }
     */
 
     function addHistoryItem(operation,theNumber){
-      var historyItem = {action:operation, input:theNumber};
+      var historyItem = {action:operation, num1:theNumber, num2:total};
       history.push(historyItem);
     }
 
@@ -140,9 +147,14 @@
     }
 
     function setFunction(theFunction){
+      if (bufferIsEmpty()) {
+        console.log('buffer empty');
+        buffer = screenBuffer;
+      } else {
+        console.log('Performing function ' + functionToPerform);
+        doCalc();
+      }
       functionToPerform = theFunction;
-      buffer = screenBuffer;
-      console.log('theFunction: ' + theFunction);
       console.log('functionToPerform: ' + functionToPerform);
     };
 
@@ -151,7 +163,7 @@
     }
 
     function clearFunction(){
-      functionToPerform = '';
+      functionToPerform = null;
     }
 
     function setBuffer(theValue){
@@ -159,8 +171,17 @@
       console.log('buffer: ' + buffer);
     }
 
+    function getBuffer(){
+      return buffer;
+    }
+
+    function bufferIsEmpty(){
+      console.log(typeof buffer);
+      return buffer = null;
+    }
+
     function clearBuffer(){
-      buffer = '';
+      buffer = null;
     }
 
     function setScreenBuffer(theValue){
@@ -182,6 +203,7 @@
       clearBuffer();
       clearFunction();
       clearMem();
+      clearTotal();
     }
 
     function doCalc(){
@@ -211,6 +233,8 @@
       clearMemory: clearMem,
       getTotal: _getTotal,
       setBuf: setBuffer,
+      getBuf: getBuffer,
+      emptyBuf: bufferIsEmpty,
       setScr: setScreenBuffer,
       getScr: getScreenBuffer,
       clrScr: clearScreenBuffer,
@@ -220,5 +244,3 @@
       clearAll: allClear
     };
   });
-
-
